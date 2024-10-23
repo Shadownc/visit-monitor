@@ -2,14 +2,18 @@ const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const cors = require('cors'); // 导入 CORS 中间件
 
 // 初始化 Express 应用
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-// SQLite 数据库路径
-const dbPath = path.resolve(__dirname, '../data/database.sqlite');
+// 允许所有来源的跨域请求
+app.use(cors()); 
+
+// SQLite 数据库路径（在 Vercel 上应使用 /tmp）
+const dbPath = path.resolve('/tmp', 'database.sqlite');
 
 // 打开数据库
 const db = new sqlite3.Database(dbPath, (err) => {
@@ -60,7 +64,7 @@ app.post('/api/log-visit', (req, res) => {
     let visitorId = req.cookies['visitor_id'];
     if (!visitorId) {
         visitorId = generateVisitorId();
-        res.cookie('visitor_id', visitorId, { maxAge: 365 * 24 * 60 * 60 * 1000 });  // 设置 Cookie 有效期为一年
+        res.cookie('visitor_id', visitorId, { maxAge: 365 * 24 * 60 * 60 * 1000 });
     }
 
     db.get(`SELECT * FROM page_views WHERE url = ?`, [url], (err, row) => {
@@ -132,9 +136,9 @@ app.get('/api/get-visit-count', (req, res) => {
     });
 });
 
-// 新增的根路径路由，返回“API 运行中”消息
+// 根路径路由，返回 JSON 格式的“API 运行中”消息
 app.get('/', (req, res) => {
-    res.status(200).send('API 运行中');
+    res.status(200).json({ message: 'API 运行中' });
 });
 
 // 导出 Express 应用以便部署到 Vercel
