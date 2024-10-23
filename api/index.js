@@ -134,7 +134,7 @@ app.get('/api/get-visit-count', (req, res) => {
 
 // 新增的根路径路由，返回“API 运行中”消息
 app.get('/', (req, res) => {
-    res.status(200).send('API 运行中');
+    res.send('API 运行中');
 });
 
 // 导出 Express 应用以便部署到 Vercel
