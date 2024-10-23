@@ -57,14 +57,12 @@ app.post('/api/log-visit', (req, res) => {
         return res.status(400).send('URL is required');
     }
 
-    // 获取访客ID
     let visitorId = req.cookies['visitor_id'];
     if (!visitorId) {
         visitorId = generateVisitorId();
         res.cookie('visitor_id', visitorId, { maxAge: 365 * 24 * 60 * 60 * 1000 });  // 设置 Cookie 有效期为一年
     }
 
-    // 查询是否存在页面记录
     db.get(`SELECT * FROM page_views WHERE url = ?`, [url], (err, row) => {
         if (err) {
             return res.status(500).json({ message: 'Database error' });
@@ -74,25 +72,20 @@ app.post('/api/log-visit', (req, res) => {
         let uvCount = 1;
 
         if (row) {
-            // 页面存在，增加 PV
             pvCount = row.pv_count + 1;
 
-            // 检查是否已经记录该访客
             db.get(`SELECT * FROM visitors WHERE visitor_id = ? AND url = ?`, [visitorId, url], (err, visitor) => {
                 if (err) {
                     return res.status(500).json({ message: 'Database error' });
                 }
 
                 if (visitor) {
-                    // 如果访客已访问过，不增加 UV
                     uvCount = row.uv_count;
                 } else {
-                    // 新访客，增加 UV
                     uvCount = row.uv_count + 1;
                     db.run(`INSERT INTO visitors (visitor_id, url) VALUES (?, ?)`, [visitorId, url]);
                 }
 
-                // 更新 PV 和 UV
                 db.run(`UPDATE page_views SET pv_count = ?, uv_count = ? WHERE url = ?`, [pvCount, uvCount, url], (err) => {
                     if (err) {
                         return res.status(500).json({ message: 'Database error' });
@@ -102,7 +95,6 @@ app.post('/api/log-visit', (req, res) => {
                 });
             });
         } else {
-            // 页面不存在，创建新记录
             db.run(`INSERT INTO page_views (url, pv_count, uv_count) VALUES (?, ?, ?)`, [url, pvCount, uvCount], (err) => {
                 if (err) {
                     return res.status(500).json({ message: 'Database error' });
@@ -138,6 +130,11 @@ app.get('/api/get-visit-count', (req, res) => {
             res.status(404).json({ url: url, pvCount: 0, uvCount: 0 });
         }
     });
+});
+
+// 新增的根路径路由，返回“API 运行中”消息
+app.get('/', (req, res) => {
+    res.status(200).send('API 运行中');
 });
 
 // 导出 Express 应用以便部署到 Vercel
