@@ -11,9 +11,9 @@ app.use(cookieParser());
 
 // 动态 CORS 配置
 const corsOptionsDelegate = (req, callback) => {
-    const origin = req.header('Origin'); // 获取请求的来源
+    // const origin = req.header('Origin'); // 获取请求的来源
     const corsOptions = {
-        origin: origin || '*', // 如果有 Origin，则使用它；否则允许所有
+        origin: '*', // 如果有 Origin，则使用它；否则允许所有
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // 允许的请求方法
         allowedHeaders: ['Content-Type', 'Authorization'], // 允许的自定义 Header
         credentials: true, // 允许携带 cookies
@@ -84,7 +84,6 @@ app.post('/api/log-visit', (req, res) => {
             maxAge: 365 * 24 * 60 * 60 * 1000, // 1 年
             httpOnly: true, // 提升安全性
             sameSite: 'None', // 防止 CSRF
-            secure: true , // 只能通过 https 传输
         });
     }
 
