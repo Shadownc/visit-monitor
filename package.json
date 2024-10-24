@@ -1,0 +1,20 @@
+{
+  "name": "visit-monitor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "deploy": "vercel --prod",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@libsql/client": "^0.14.0",
+    "@vercel/kv": "^3.0.0",
+    "next": "^15.0.1"
+  }
+}
