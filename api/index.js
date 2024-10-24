@@ -77,12 +77,14 @@ app.post('/api/log-visit', (req, res) => {
     }
 
     let visitorId = req.cookies['visitor_id'];
+    console.log('visitorId',visitorId)
     if (!visitorId) {
         visitorId = generateVisitorId();
         res.cookie('visitor_id', visitorId, {
             maxAge: 365 * 24 * 60 * 60 * 1000, // 1 年
             httpOnly: true, // 提升安全性
             sameSite: 'Lax', // 防止 CSRF
+            secure: true , // 只能通过 https 传输
         });
     }
 
