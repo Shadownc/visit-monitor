@@ -14,7 +14,7 @@
 ## 一键部署Vercel
 [![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/Shadownc/visit-monitor)
 
-> 部署完成后访问`https://example.com/api/-init-db`初始化数据库
+> 部署完成后访问`https://example.com/api/init-db`初始化数据库
 ## 在自己的项目内引用
 ```
 (function () {
@@ -31,7 +31,7 @@
     const url = window.location.href;
     const visitorId = getOrCreateVisitorId();
 
-    fetch('/api/log-visit', {
+    fetch('https://example.com/api/log-visit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
