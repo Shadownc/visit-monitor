@@ -14,7 +14,6 @@
   "license": "ISC",
   "dependencies": {
     "@libsql/client": "^0.14.0",
-    "@vercel/kv": "^3.0.0",
     "next": "^15.0.1"
   }
 }
