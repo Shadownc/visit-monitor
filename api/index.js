@@ -83,7 +83,7 @@ app.post('/api/log-visit', (req, res) => {
         res.cookie('visitor_id', visitorId, {
             maxAge: 365 * 24 * 60 * 60 * 1000, // 1 年
             httpOnly: true, // 提升安全性
-            sameSite: 'Lax', // 防止 CSRF
+            sameSite: 'None', // 防止 CSRF
             secure: true , // 只能通过 https 传输
         });
     }
