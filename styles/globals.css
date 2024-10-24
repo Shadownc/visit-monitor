@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.floating {
+    animation: float 3s ease-in-out infinite;
+}
+
+.wave-background {
+    background: linear-gradient(45deg, #4f46e5, #06b6d4);
+    position: relative;
+    overflow: hidden;
+}
+
+.wave-background::before,
+.wave-background::after {
+    content: '';
+    position: absolute;
+    width: 300vw;
+    height: 300vw;
+    top: -65vw;
+    left: -100vw;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 48%;
+    animation: wave 18s infinite linear;
+}
+
+.wave-background::after {
+    background: rgba(255, 255, 255, 0.05);
+    animation: wave 15s infinite linear;
+    top: -70vw;
+}
+
+@keyframes wave {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+}
